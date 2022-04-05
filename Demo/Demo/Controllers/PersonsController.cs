@@ -22,7 +22,7 @@ namespace Demo.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<string> GetAll([FromBody] GetAllRequestDto request)
+        public async Task<string> GetAll([FromQuery] GetAllRequestDto request)
         {
             return await PersonService
                 .GetFilteredPeopleAsync(request, _unitOfWork, _mapper);

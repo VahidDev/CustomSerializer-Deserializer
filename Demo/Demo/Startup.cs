@@ -8,8 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Repository.DAL;
 using Repository.Mapper;
-using Repository.RepositoryServices.Abstraction;
-using Repository.RepositoryServices.Implementation;
 
 namespace Demo
 {
