@@ -16,7 +16,7 @@ namespace Demo.Utilities.JsonUtilities
         public static string WriteMiddleOfJson(string json, PropertyInfo prop,object obj)
         {
             return json+ $"\"{prop.Name.ToLower()}\"" + ":"
-                + $"\"{prop.GetPropertyValue(obj)}\""+ ",";
+                + $"\"{prop.GetPropertyValue(obj).ToString().Trim()}\""+ ",";
         }
     }
 }

@@ -11,37 +11,44 @@ namespace Demo.CustomJsonConverter.Serializer
         {
             string json = "{";
             PropertyInfo[] props = obj.GetType().GetProperties();
-            foreach (PropertyInfo prop in props)
-            {
-                //If prop doens't have a value then ignore
-                if (!PropertyValidator.HasPropertyValue<T>(obj,prop)) continue;
-                if (!prop.IsGivenType(nameof(System)))
-                {
-                    json = SerializeCustomObj(ref json,prop,prop.GetPropertyValue<T>(obj));
-                    continue;
-                }
-                json = JsonWriter.WriteMiddleOfJson(json, prop, obj);
-            }
-            json = json.Remove(json.Length - 1, 1);
-            json += "}";
-            return json;
+            json= SerializeProps<T>(ref json, obj, props);
+            return JsonWriter.WriteEndOfJson(json);
         }
         public static string SerializeCustomObj(ref string json,PropertyInfo propinfo,object obj)
         {
-            json = JsonWriter.WriteBeginningOfJson(json, propinfo);
             PropertyInfo[] props = propinfo.PropertyType.GetProperties();
+            json = SerializeProps<object>(ref json, obj, props, propinfo);
+            return  JsonWriter.WriteEndOfJson(json)+"}";
+        }
+        public static string SerializeProps<T>
+        (ref string json, T obj, PropertyInfo[] props, PropertyInfo propinfo = null)
+        {
+            if (propinfo != null)
+                json = JsonWriter.WriteBeginningOfJson(json, propinfo);
             foreach (PropertyInfo prop in props)
             {
-                if (!PropertyValidator.HasPropertyValue(obj,prop)) continue;
-                if (!prop.IsGivenType(nameof(System)))
+                //If prop doens't have a value then ignore
+                //if propinfo is null then call generic methods 
+                if (propinfo != null)
                 {
-                    json += SerializeCustomObj(ref json,prop,prop.GetPropertyValue(obj));
+                    if (!PropertyValidator.HasPropertyValue(obj, prop)) continue;
+                    if (!prop.IsGivenType(nameof(System)))
+                    {
+                        json += SerializeCustomObj(ref json, prop, prop.GetPropertyValue(obj));
+                    }
                 }
-                json = JsonWriter.WriteMiddleOfJson(json, prop, obj); 
+                else
+                {
+                    if (!PropertyValidator.HasPropertyValue<T>(obj, prop)) continue;
+                    if (!prop.IsGivenType(nameof(System)))
+                    {
+                        json = SerializeCustomObj(ref json, prop, prop.GetPropertyValue<T>(obj));
+                        continue;
+                    }
+                }
+                json = JsonWriter.WriteMiddleOfJson(json, prop, obj);
             }
-            json = JsonWriter.WriteEndOfJson(json);
-            return json;
+            return JsonWriter.WriteEndOfJson(json);
         }
-
     }
 }
