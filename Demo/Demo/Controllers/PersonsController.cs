@@ -22,13 +22,13 @@ namespace Demo.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<string> GetAll([FromQuery] GetAllRequestDto request)
+        public async Task<string> GetAllAsync([FromQuery] GetAllRequestDto request)
         {
             return await PersonService
                 .GetFilteredPeopleAsync(request, _unitOfWork, _mapper);
         }
         [HttpPost]
-        public async Task<int> Save([FromBody] string json)
+        public async Task<int> SaveAsync([FromBody] string json)
         {
             Person person= CustomDeserializer.Deserialize<Person>(json);
             return await PersonService
