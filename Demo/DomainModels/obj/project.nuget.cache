@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AZKKTh3uBhkZ7tSoYnAV93KkYJXGNFSbqzQpqBRPJRc/5IdNFRZtsZ2qw+KEjRvVeToeuxWkKAFmWTIzDc43mA==",
+  "dgSpecHash": "+gHOaeISHpVMi/+ItH/bPR2GGJZgKwTSDIgK0islbqEY8QFx7RhsSZdpuq2Xx2T5Wf08Zd86NFtlK2tjDrGgiw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\User\\OneDrive\\Рабочий стол\\Demo\\Demo\\DomainModels\\DomainModels.csproj",
+  "projectFilePath": "C:\\Users\\User\\Desktop\\Parser\\CustomSerializer-Deserializer\\Demo\\DomainModels\\DomainModels.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

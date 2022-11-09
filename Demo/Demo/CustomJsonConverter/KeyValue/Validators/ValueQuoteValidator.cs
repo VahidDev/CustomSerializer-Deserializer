@@ -6,7 +6,9 @@
         {
             if (value[0] == '’' || value[0] == '‘' || value[0] == '\''
              ||value[0]=='`'
-                ||value[0] == '\"' || value[0] == '“' || value[0] == '”') return true;
+             ||value[0] == '\"' || value[0] == '“' 
+             || value[0] == '”') return true;
+
             return false;
         }
     }

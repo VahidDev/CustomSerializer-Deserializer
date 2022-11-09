@@ -5,18 +5,20 @@ namespace Demo.Utilities.JsonUtilities
 {
     public class JsonWriter
     {
-        public static string WriteBeginningOfJson(string json,PropertyInfo prop)
+        public static string WriteBeginningOfJson(string json, PropertyInfo prop)
         {
-            return json+ $"\"{prop.Name.ToLower()}\""+ ":"+ "{";
+            return json + $"\"{prop.Name.ToLower()}\"" + ":" + "{";
         }
+
         public static string WriteEndOfJson(string json)
         {
-            return json.Remove(json.Length - 1, 1)+ "}";
+            return json.Remove(json.Length - 1, 1) + "}";
         }
-        public static string WriteMiddleOfJson(string json, PropertyInfo prop,object obj)
+
+        public static string WriteMiddleOfJson(string json, PropertyInfo prop, object obj)
         {
-            return json+ $"\"{prop.Name.ToLower()}\"" + ":"
-                + $"\"{prop.GetPropertyValue(obj).ToString().Trim()}\""+ ",";
+            return json + $"\"{prop.Name.ToLower()}\"" + ":"
+                + $"\"{prop.GetPropertyValue(obj).ToString().Trim()}\"" + ",";
         }
     }
 }

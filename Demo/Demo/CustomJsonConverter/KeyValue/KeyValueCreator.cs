@@ -11,25 +11,11 @@ namespace Demo.CustomJsonConverter.KeyValue
 {
     public class KeyValueCreator
     {
-        // The returned list has all the key value pairs for the object that we will create
         public static List<KeyValuePair<string, string>> CreateKeyValueList
             (string json,Type  type)
         {
             List<KeyValuePair<string, string>> list = new();
 
-            #region typeNames Explanation
-            //First keep in mind that in the keyvalue list I keep the keys as following:
-            //Person.Id or Address.AddressLine so TypeName.PropertyName
-            //So I use Type names for the keys so that
-            //the properties of type A are different from properties type B
-            //because we can have a following case where we have the same named keys-->
-            //"{id:3,leader:{id:3,name:'Vahid'} }" there are 2 the same named keys (id and id) 
-            //We need to make each property for each object unique so that there is no conflict
-            //that's why I keep track of typeNames 
-            //When I encounter the char '}' which means it is the end of the object
-            //I pop a type from the stack and it returns to the previous type
-            //Stack in this case is the best data structure 
-            #endregion
             Stack<string> typeNames = new();
 
             json = json.Trim();
@@ -60,22 +46,27 @@ namespace Demo.CustomJsonConverter.KeyValue
                 //if the keyvalue array has just 2 elements then it means 
                 //we have keys on index zero and values on index 1
                 #endregion
+
                 if (keyvalue.Length == 2)
                 {
                     key = QuoteRemover.RemoveQuotes(keyvalue[0].Trim());
+
                     #region Explanation
                     //check if the property of the type with this key exist
                     //if no then ignore everything and
                     //we don't add anything to the key value list
                     #endregion
+
                     if (!PropertyValidator.PropertyExist(allTypes, typeNames, key))
                     {
                         continue;
                     }
+
                     //if it exists then get the property
                     prop = PropertyGetter.GetProperty(allTypes, typeNames, key);
 
                     value = keyvalue[1].Trim();
+
                     if (ValueValidator.WrapperQuotesExist(value))
                     {
                         value = value.RemoveFirtsAndLastChar();
@@ -105,9 +96,10 @@ namespace Demo.CustomJsonConverter.KeyValue
                 else if (keyvalue.Length == 3)
                 {
                     key = QuoteRemover.RemoveQuotes(keyvalue[1]).Trim();
-                    key=key.Remove(0, 1).Trim();
+                    key= key.Remove(0, 1).Trim();
                     typeNames.Push(keyvalue[0]);
                     value = keyvalue[2].Trim();
+
                     #region Explanation
                     // the object has just one property for example -->
                     // { name:'Lala',Company:{name'Kibrit'} }
@@ -118,6 +110,7 @@ namespace Demo.CustomJsonConverter.KeyValue
                     //(pop the stack) as many times as the number
                     //of closing curly brackets is (in this case 2 times) 
                     #endregion
+
                     if (value.Last()=='}')
                     {
                         foreach(char character in value)
@@ -127,19 +120,24 @@ namespace Demo.CustomJsonConverter.KeyValue
                             if (value.Last()!='}') break;
                         }
                     }
+
                     if (ValueValidator.WrapperQuotesExist(value))
                     {
                         value = value.RemoveFirtsAndLastChar();
                     }
+
                     if (!PropertyValidator.PropertyExist(allTypes, typeNames, key))
                     {
                         continue;
                     }
+
                     prop = PropertyGetter.GetProperty(allTypes, typeNames, key);
-                    list.Add(new KeyValuePair<string, string>
-                        (typeNames.Peek()+ '.' + prop.Name, value));
+
+                    list.Add(new KeyValuePair<string, string>(typeNames.Peek() + 
+                        '.' + prop.Name, value));
                 }
             }
+
             return list;
         }
     }

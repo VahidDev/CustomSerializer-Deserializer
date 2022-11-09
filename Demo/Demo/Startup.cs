@@ -27,12 +27,15 @@ namespace Demo
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo", Version = "v1" });
             });
+
             services.AddDbContext<AppDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"),
                     builder => {
                         builder.MigrationsAssembly(nameof(Repository));
                     });
+
             });
+
             services.AddRepository();
             services.AddAutoMapper(typeof(MapperProfile));
         }

@@ -10,12 +10,15 @@ namespace Demo.Utilities.JsonUtilities
         {
             //T is Entity type parameter D is Dto
             string json = "";
+
             foreach (T item in list)
             {
                 json += CustomSerialier.Serialize<D>(mapper.Map<D>(item));
                 json += ',';
             }
+
             json = json.Remove(json.Length - 1, 1);
+
             return json;
         }
     }
